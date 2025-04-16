@@ -1,0 +1,17 @@
+[
+  {
+    "city": "Revere",
+    "state": "MA",
+    "address": "1510 N Shore Rd",
+    "zip": "02151",
+    "rent": 2000,
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "appliances": ["diswasher"],
+    "images": [],
+    "seller": {
+      "name": "John Doe",
+      "contact": "111-111-1111"
+    }
+  }
+]
