@@ -5,6 +5,8 @@ import io
 import uuid
 from dotenv import load_dotenv
 
+pre_processed_bucket_name = "project-preprocessed-data-group-nca"
+
 def load_env_variables():
     load_dotenv()
     return {
@@ -51,6 +53,6 @@ def upload_obj_to_s3(payload):
 
     s3_client.upload_fileobj(
         json_bytes,
-        aws_credentials["s3_bucket_name"],
+        pre_processed_bucket_name,
         file_name
     )
