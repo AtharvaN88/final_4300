@@ -153,6 +153,7 @@ if event and event.selection.objects:
         )
 
     st.markdown("### Contact")
+    # NOTE: idk how the mapping works, but this might need some adjustments
     st.write(f"**Name:** {apartment.get('seller.name', 'N/A')}")
     st.write(f"**Phone:** {apartment.get('seller.contact', 'N/A')}")
 
