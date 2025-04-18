@@ -18,4 +18,4 @@ with col1:
 with col2:
     st.subheader("I'm a Buyer")
     st.write("Browse listings to find your perfect apartment.")
-    st.page_link("pages/listings.py", label="View Available Listings")
+    st.page_link("pages/view-listings.py", label="View Available Listings")
