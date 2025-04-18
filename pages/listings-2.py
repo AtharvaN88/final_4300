@@ -38,7 +38,7 @@ def get_df_values():
     df['seller'] = df.apply(lambda row: {'name': row['seller_name'], 'contact': row['seller_contact']}, axis=1)
     df = df.drop(columns=['seller_name', 'seller_contact'])
 
-    geolocator = Nominatim(user_agent="listings-coordinates")
+    geolocator = Nominatim(user_agent="listings-coordinates", timeout = 10)
     
     def get_map_coordinates(listing):
         address = f"{listing['address']}, {listing['city']}, {listing['state']}"
