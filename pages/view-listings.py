@@ -5,6 +5,9 @@ import pydeck
 import base64
 import streamlit as st
 import mysql.connector
+from PIL import Image
+import io
+
 
 db_config = {
     "host": "final-project-rds.c6xqceq2g4jn.us-east-1.rds.amazonaws.com",
@@ -129,11 +132,23 @@ if event and event.selection.objects:
 
     st.markdown("## Apartment Listing Details")
 
-    if apartment.get('images'):
-        first_image = apartment['images'][0]
-        st.image(base64.b64decode(first_image), use_container_width=True)
-    else:
-        st.write('No Images Available')
+    if apartment.get('images') and len(apartment['images']) > 0:
+        # first_image = apartment['images'][0]
+        # first_image = first_image[2:-1]
+        first_image = apartment['images']
+        try:
+
+            # Decode base64 string
+            img_data = base64.b64decode(first_image)
+
+            # Open and display image
+            img = Image.open(io.BytesIO(img_data))
+            st.image(img, use_container_width=True)
+
+        except Exception as e:
+            st.write("Error loading image:")
+            st.write(e)
+            st.write('No valid image available')
 
     st.subheader(f"{apartment['rent']} / month")
 
