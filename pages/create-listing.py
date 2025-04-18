@@ -1,6 +1,8 @@
 import streamlit as st
 import base64
 from utils.utils import upload_obj_to_s3
+import mysql.connector
+
 
 def convert_images_to_bytes(file):
     bytes_data = file.read()
@@ -74,5 +76,5 @@ with st.form(key="upload_form", clear_on_submit=False):
             }
         }
 
-        upload_obj_to_s3(json_payload)
+        upload_obj_to_s3([json_payload])
         st.success('Listing Created, it may take some time for it to appear', icon="✅")
