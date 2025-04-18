@@ -58,10 +58,47 @@ def get_starting_position(df):
 
 df = get_df_values()
 start_lat, start_long = get_starting_position(df)
+areas = ["All Cities"] + df["city"].unique().tolist()
+min_range = df['rent'].min()
+max_range = df['rent'].max()
+max_beds = df['bedrooms'].max()
+
+st.header("Available Apartments")
+
+st.write('Filters')
+header_col1, header_col2, header_col3 = st.columns([1,1,1])
+with header_col1:
+    user_city = st.selectbox(
+        # TODO: make this a list of cities within Mass?
+        label="Area to search",
+        index=0,
+        options=areas,
+        placeholder="Location or Point of interest",
+    )
+
+with header_col2:
+    user_price_range = st.slider(
+        label="Price range",
+        value=max_range,
+        min_value=min_range,
+        max_value=max_range
+    )
+
+with header_col3:
+    user_bedrooms = st.number_input("Max Bedrooms",
+    value=max_beds,
+    max_value=9)
+
+
+filtered_df = df[
+    (df["city"] == user_city if user_city != "All Cities" else True)
+    & (df["rent"] <= user_price_range)
+    & (df["bedrooms"] <= user_bedrooms)
+]
 
 point_layer = pydeck.Layer(
     'ScatterplotLayer',
-    data=df,
+    data=filtered_df,
     id='apartments',
     get_position=['Longitude', 'Latitude'],
     pickable=True,
@@ -84,9 +121,6 @@ chart= pydeck.Deck(
     initial_view_state=view_state,
     tooltip=tooltip
 )
-
-
-st.header("Available Apartments")
 
 event = st.pydeck_chart(chart, on_select="rerun", selection_mode='single-object')
 
