@@ -1,6 +1,7 @@
 import streamlit as st
 import base64
 from utils.utils import upload_obj_to_s3
+import json
 import mysql.connector
 
 
@@ -46,6 +47,12 @@ with st.form(key="upload_form", clear_on_submit=False):
     with col2:
         bathrooms = st.number_input("Bathrooms", max_value=10)
 
+    appliances = st.multiselect(
+        "Select available appliances",
+        options=["Dishwasher", "Refrigerator", "Oven", "Microwave", "Washer", "Dryer", "AC Unit"],
+        default=[]
+    )
+
     uploaded_files = st.file_uploader(
         "Upload Images", accept_multiple_files=True
     )
@@ -55,7 +62,7 @@ with st.form(key="upload_form", clear_on_submit=False):
         name = f'{first_name} {last_name}'
         images = []
         for uploaded_file in uploaded_files:
-            encoding = convert_images_to_bytes()
+            encoding = convert_images_to_bytes(uploaded_file)
             images.append(encoding)
 
         phone_converted = str(phone_number)
@@ -68,8 +75,8 @@ with st.form(key="upload_form", clear_on_submit=False):
             "rent": price,
             "bedrooms": bedrooms,
             "bathrooms": bathrooms,
-            "appliances": ["diswasher"],
-            "images": images,
+            "appliances": json.dumps(appliances),
+            "images": json.dumps(images),
             "seller": {
             "name": name,
             "contact": phone_converted
